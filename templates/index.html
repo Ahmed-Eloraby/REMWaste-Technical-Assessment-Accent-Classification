@@ -181,20 +181,22 @@
         }
       }
       .github-icon {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 10px;
+        margin: 20px 0;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 25px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         transition: all 0.3s ease;
         cursor: pointer;
         backdrop-filter: blur(10px);
+        width: fit-content;
+        /* margin-left: auto; */
+        /* margin-right: auto; */
+        margin: 5px;
       }
 
       .github-icon:hover {
@@ -208,12 +210,18 @@
         height: 24px;
         fill: #333;
       }
+      .footer {
+        /* margin-top: 30px; */
+        text-align: center;
+        color: rgba(24, 11, 55, 0.8);
+        font-size: 15;
+      }
     </style>
   </head>
   <body>
     <div
       class="github-icon"
-      onclick="window.open('https://github.com/yourusername/your-repo-name', '_blank')"
+      onclick="window.open('https://github.com/Ahmed-Eloraby/REMWaste-Technical-Assessment-Accent-Classification', '_blank')"
     >
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -242,6 +250,7 @@
       </div>
 
       <div class="result" id="result"></div>
+      <div class="footer">Made by Ahmed Eloraby</div>
     </div>
 
     <script>

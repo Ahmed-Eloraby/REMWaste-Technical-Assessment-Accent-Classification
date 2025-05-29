@@ -1,3 +1,8 @@
-prompt_api_key = "AIzaSyALf-KDrwjwjntX9iLi7g3Gyo1hWCQrHAw"
+from dotenv import load_dotenv
+import os
 
+load_dotenv()  # Load variables from .env
+
+
+prompt_api_key = os.getenv("API_KEY")
 TEMP_DIR = "TEMP"
