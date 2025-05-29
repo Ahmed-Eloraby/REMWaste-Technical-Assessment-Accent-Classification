@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Country Analyzer</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #93a6f7 0%, #1d003b 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        font-weight: 300;
+      }
+
+      .input-group {
+        margin-bottom: 30px;
+      }
+
+      #urlInput {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 50px;
+        outline: none;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      #urlInput:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      #submitBtn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 16px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 150px;
+        font-weight: 600;
+      }
+
+      #submitBtn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+
+      #submitBtn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .loading {
+        display: none;
+        margin: 30px 0;
+      }
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #667eea;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: #666;
+        font-size: 16px;
+      }
+
+      .result {
+        display: none;
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 15px;
+        text-align: left;
+      }
+
+      .result.success {
+        background: linear-gradient(135deg, #aeefad 0%, #065e19 100%);
+        color: white;
+      }
+
+      .result.error {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        color: white;
+      }
+
+      .result h3 {
+        margin-bottom: 15px;
+        font-size: 1.5em;
+      }
+
+      .result-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+      }
+
+      .result-item strong {
+        display: inline-block;
+        min-width: 100px;
+      }
+
+      .country-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .flag-icon {
+        width: 32px;
+        height: 24px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+      }
+
+      .country-name {
+        font-size: 1.1em;
+        font-weight: 600;
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .github-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+      }
+
+      .github-icon:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        background: rgba(255, 255, 255, 1);
+      }
+
+      .github-icon svg {
+        width: 24px;
+        height: 24px;
+        fill: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="github-icon"
+      onclick="window.open('https://github.com/yourusername/your-repo-name', '_blank')"
+    >
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M12 0.297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+        />
+      </svg>
+    </div>
+    <div class="container">
+      <h1>Accent Classifier</h1>
+
+      <form id="urlForm">
+        <div class="input-group">
+          <input
+            type="url"
+            id="urlInput"
+            placeholder="Enter video URL (e.g., https://example.com)"
+            required
+          />
+        </div>
+        <button type="submit" id="submitBtn">Get Accent</button>
+      </form>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Determining Accent...</div>
+      </div>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      const form = document.getElementById("urlForm");
+      const urlInput = document.getElementById("urlInput");
+      const submitBtn = document.getElementById("submitBtn");
+      const loading = document.getElementById("loading");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const url = urlInput.value.trim();
+        if (!url) return;
+
+        // Show loading state
+        submitBtn.disabled = true;
+        loading.style.display = "block";
+        result.style.display = "none";
+
+        try {
+          // Simulate API call
+          const response = await fetch("/api/get-accent", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url: url }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Success response: { "accent": "...", "probability": 0.85, "summary": "..." }
+            showSuccess([data.accent, data.probability, data.summary]);
+          } else {
+            // Error response: { "error": "error message" }
+            showError(data.error || "An unknown error occurred");
+          }
+        } catch (error) {
+          showError(
+            "Network error. Please check your connection and try again."
+          );
+        }
+      });
+
+      function getCountryCode(countryName) {
+        // Map common country names to ISO 3166-1 alpha-2 codes
+        const countryMap = {
+          england: "GB",
+          us: "US",
+          canada: "CA",
+          australia: "AU",
+          indian: "IN",
+          scotland: "GB", // Scotland uses GB flag (or could use custom Scottish flag)
+          ireland: "IE",
+          african: "ZA", // Using South Africa as representative
+          malaysia: "MY",
+          newzealand: "NZ",
+          southatlantic: "FK", // Using Falkland Islands as South Atlantic representative
+          bermuda: "BM",
+          philippines: "PH",
+          hongkong: "HK",
+          wales: "GB", // Wales uses GB flag (or could use custom Welsh flag)
+          singapore: "SG",
+        };
+
+        return (
+          countryMap[countryName] || countryName.substring(0, 2).toUpperCase()
+        );
+      }
+
+      function getFlagUrl(countryCode) {
+        // Using flagsapi.com which provides reliable flag images
+        return `https://flagsapi.com/${countryCode}/flat/32.png`;
+      }
+
+      function showSuccess(data) {
+        const [country, probability, description] = data;
+        const countryCode = getCountryCode(country);
+        const flagUrl = getFlagUrl(countryCode);
+
+        result.className = "result success fade-in";
+        result.innerHTML = `
+                <h3>Analysis Complete</h3>
+                <div class="result-item">
+                    <strong>Country:</strong>
+                    <div class="country-info">
+                        <img src="${flagUrl}" alt="${country} flag" class="flag-icon" onerror="this.style.display='none'">
+                        <span class="country-name">${country}</span>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <strong>Probability:</strong> ${(probability * 100).toFixed(
+                      1
+                    )}%
+                </div>
+                <div class="result-item">
+                    <strong>Description:</strong> ${description}
+                </div>
+            `;
+
+        hideLoading();
+        result.style.display = "block";
+      }
+
+      function showError(message) {
+        result.className = "result error fade-in";
+        result.innerHTML = `
+                <h3>Error</h3>
+                <div class="result-item">
+                    ${message}
+                </div>
+            `;
+
+        hideLoading();
+        result.style.display = "block";
+      }
+
+      function hideLoading() {
+        loading.style.display = "none";
+        submitBtn.disabled = false;
+      }
+    </script>
+  </body>
+</html>
