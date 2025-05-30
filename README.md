@@ -20,7 +20,7 @@ A simple Flask web application that takes a URL of a video and responds with the
 `````bash
 git clone https://github.com/Ahmed-Eloraby/REMWaste-Technical-Assessment-Accent-Classification
 cd REMWaste-Technical-Assessment-Accent-Classification
-
+`````
 ### 2. Create a virtual environment (optional but recommended)
 ```bash
 python -m venv venv
