@@ -9,7 +9,8 @@ A simple Flask web application that takes a URL of a video and responds with the
 - Simple HTML frontend served via Flask templates
 - JSON API endpoint for handling POST requests
 - Clean separation of frontend and backend logic
-- Using API of Existing Classifiers (commonaccent_cpa: https://huggingface.co/Jzuluaga/accent-id-commonaccent_ecapa)
+- Classifying Accent using a pretrained classifier: https://huggingface.co/Jzuluaga/accent-id-commonaccent_ecapa
+- Use of Generative AI to describe the prediction
 
 ---
 
