@@ -38,7 +38,7 @@ python app.py
 Visit http://localhost:5000 in your browser.
 Enter your url in the textbox to get the result.
 
-![alt text](https://drive.google.com/file/d/1v36x30x5nHcoIOrrWgrV77g4OXRxerOH/view?usp=sharing "Screenshot of the interface")
+![Screenshot 2025-05-30 031512](https://github.com/user-attachments/assets/eb83b748-fe83-4b3f-ab10-d6e1c72a52c5)
 
 
 🤝 License
