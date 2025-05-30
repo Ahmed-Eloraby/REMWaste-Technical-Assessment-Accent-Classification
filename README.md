@@ -38,6 +38,8 @@ python app.py
 Visit http://localhost:5000 in your browser.
 Enter your url in the textbox to get the result.
 
+![alt text](https://drive.google.com/file/d/1v36x30x5nHcoIOrrWgrV77g4OXRxerOH/view?usp=sharing "Screenshot of the interface")
+
 
 🤝 License
 MIT License. Feel free to fork, use, and modify.
