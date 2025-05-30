@@ -22,17 +22,18 @@ git clone https://github.com/Ahmed-Eloraby/REMWaste-Technical-Assessment-Accent-
 cd REMWaste-Technical-Assessment-Accent-Classification
 `````
 ### 2. Create a virtual environment (optional but recommended)
-```bash
+`````bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-
+`````
 ### 3. Install dependencies
-```bash
+`````bash
 pip install -r requirements.txt
-
+`````
 ### 4. Run the app locally
-```bash
+`````bash
 python app.py
+`````
 
 Visit http://localhost:5000 in your browser.
 Enter your url in the textbox to get the result.
